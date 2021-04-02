@@ -1,0 +1,32 @@
+body {
+    text-align: center;
+    font-family: 'Roboto Mono', monospace;
+}
+.point {
+    font-size: 32px;
+    margin-block-start: 12px;
+    margin-block-end: 12px;
+}
+.pps {
+    font-size: 24px;
+    margin-block-start: 12px;
+    margin-block-end: 12px;
+}
+.nav {
+    background-color: #c0c0c0;
+    border-color: #808080;
+    font:400 14px 'Roboto Mono';
+    margin:5px;
+}
+.genericB {
+    background-color: #c0c0c0;
+    border-color: #808080;
+    font:400 14px 'Roboto Mono';
+    margin:5px;
+}
+.danger {
+    background-color: #c08080;
+    border-color: #c00000;
+    font:400 14px 'Roboto Mono';
+    margin:5px;
+}
