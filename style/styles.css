@@ -2,15 +2,15 @@ body {
     text-align: center;
     font-family: 'Roboto Mono', monospace;
 }
-.point {
+.xlarge {
     font-size: 32px;
     margin-block-start: 12px;
     margin-block-end: 12px;
 }
-.pps {
+.large {
     font-size: 24px;
-    margin-block-start: 12px;
-    margin-block-end: 12px;
+    margin-block-start: 8px;
+    margin-block-end: 8px;
 }
 .nav {
     background-color: #c0c0c0;
@@ -23,6 +23,9 @@ body {
     border-color: #808080;
     font:400 14px 'Roboto Mono';
     margin:5px;
+}
+.genericB:disabled {
+    color:rgba(0, 0, 0, 0.25);
 }
 .danger {
     background-color: #c08080;

@@ -6,12 +6,14 @@
     <link rel="stylesheet" type="text/css" href="style/styles.css" />
 </head>
 <body>
-    <p id="point" class="point">0 Points</p>
-    <p id="pps" class="pps">0 Points/sec</p>
+    <p id="point" class="xlarge">0 Points</p>
+    <p id="pps" class="large">0 Points/sec</p>
+    <p id="mp" class="large" style="display:none">0 Meta-Points</p>
+    <button id="prestige1" class="genericB" style="display:none" disabled=true onclick="prestige()">Prestige for 0 Meta-Points</button>
     <div id="nav">
-        <button onclick="tab('produceMenu')" class="nav">Go To Production</button>
-        <button onclick="tab('shopMenu')" class="nav">Go To Shop</button>
-        <button onclick="tab('settingMenu')" class="nav">Go To Settings</button>
+        <button onclick="tab('produceMenu')" class="nav">Main</button>
+        <button onclick="tab('shopMenu')" class="nav">Shop</button>
+        <button onclick="tab('settingMenu')" class="nav">Settings</button>
     </div>
     <div id="produceMenu" style="display:inline-block">
         <button id="a01" onclick="clickPoint()" class="genericB">Earn 1 Point</button>
