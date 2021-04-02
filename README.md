@@ -1,4 +1,3 @@
-# bad-idle-game
-This is a bad idle game.\
-This is my first attempt of making an idle game.\
-It does not have much features.
+# Points Idle
+This is a game where you click to get points.\
+## Features
