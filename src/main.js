@@ -177,6 +177,11 @@ var gameLoop = window.setInterval(function() {
     autoPoint(diff)
     unlock()
     prestigeUpdate()
+    update("mp", player.metaPoint + " Meta-Point")
+    if (player.metaPoint != 1)
+    {
+        update("mp", document.getElementById("mp").innerHTML + "s")
+    }
 }, 1000)
 
 var saveLoop = window.setInterval(function() {

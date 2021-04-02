@@ -33,3 +33,6 @@ body {
     font:400 14px 'Roboto Mono';
     margin:5px;
 }
+footer {
+    bottom: 0%;
+}
