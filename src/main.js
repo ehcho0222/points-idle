@@ -12,8 +12,11 @@ var player = {
     metaClickCost: 1,
     metaAutoUpgrade: 0,
     metaAutoCost: 1,
+    notation: 0,
     lastTick: Date.now
 }
+
+var notationList = ["Scientific", "Engineering"]
 
 function tab(tab) {
     document.getElementById("produceMenu").style.display = "none"
@@ -41,19 +44,31 @@ function update(id, content) {
     document.getElementById(id).innerHTML = content;
 }
 
+function changeNotation() {
+    if (player.notation === 1)
+    {
+        player.notation = 0
+    }
+    else
+    {
+        player.notation += 1
+    }
+    update("z01", "Notation: " + notationList[player.notation])
+}
+
 function format(number, type) {
 	let exponent = Math.floor(Math.log10(number))
 	let mantissa = number / Math.pow(10, exponent)
-	if (exponent < 3) return number.toFixed(0)
-	if (type === "scientific") return mantissa.toFixed(2) + "e" + exponent
-	if (type === "engineering") return (Math.pow(10, exponent % 3) * mantissa).toFixed(2) + "e" + (Math.floor(exponent / 3) * 3)
+	if (type === 0 && exponent >= 6) return mantissa.toFixed(2) + "e" + exponent
+	if (type === 1 && exponent >= 6) return (Math.pow(10, exponent % 3) * mantissa).toFixed(2) + "e" + (Math.floor(exponent / 3) * 3)
+    return number.toFixed(0)
 }
 
 function prestigeUpdate() {
     if (player.point >= Math.pow(2, 2.5) * 5000)
     {
         document.getElementById("prestige1").disabled = false;
-        update("prestige1", "Prestige for " + format(Math.pow(player.point/5000, 0.4), "scientific") + " Meta-Points")
+        update("prestige1", "Prestige for " + format(Math.floor(Math.pow(player.point/5000, 0.4), player.notation)) + " Meta-Points")
     }
     else if (player.point >= 5000)
     {
@@ -68,7 +83,7 @@ function prestigeUpdate() {
 }
 
 function prestige() {
-    var prestigeCon = confirm("Are you sure you want to prestige? You will get " + format(Math.pow(player.point/5000, 0.4), "scientific") + " Meta-Points.")
+    var prestigeCon = confirm("Are you sure you want to prestige? You will get " + format(Math.floor(Math.pow(player.point/5000, 0.4)), player.notation) + " Meta-Points.")
     if (prestigeCon === true)
     {
         player.metaPoint += Math.floor(Math.pow(player.point/5000, 0.4))
@@ -89,7 +104,7 @@ function prestige() {
 function clickPoint() {
     if (isNaN(player.point)) player.point = 0
     player.point += player.pointPerClick*Math.pow(2, player.metaClickUpgrade)
-    update("point", format(player.point, "scientific") + " Point")
+    update("point", format(player.point, player.notation) + " Point")
     if (player.point != 1)
     {
         update("point", document.getElementById("point").innerHTML + "s")
@@ -104,24 +119,24 @@ function upgradeClick() {
         player.point -= player.pointPerClickCost
         player.pointPerClick += 1
         player.pointPerClickCost = player.pointPerClick * player.pointPerClick * 10
-        update("point", format(player.point, "scientific") + " Point")
+        update("point", format(player.point, player.notation) + " Point")
         if (player.point != 1)
         {
             update("point", document.getElementById("point").innerHTML + "s")
         }
-        update("a01", "Earn " + format(player.pointPerClick, "scientific") + " Point")
+        update("a01", "Earn " + format(player.pointPerClick, player.notation) + " Point")
         if (player.pointPerClick*Math.pow(2, player.metaClickUpgrade) != 1)
         {
             update("a01", document.getElementById("a01").innerHTML + "s")
         }
-        update("b01", "Upgrade Click: Level " + player.pointPerClick + " (Costs " + format(player.pointPerClickCost, "scientific") + " Points)")
+        update("b01", "Upgrade Click: Level " + player.pointPerClick + " (Costs " + format(player.pointPerClickCost, player.notation) + " Points)")
     }
 }
 
 function autoPoint(ms) {
     player.point += (player.autoPointLevel * player.autoPointLevel * Math.pow(3, player.metaAutoUpgrade) * ms / 1000)
-    update("pps", format(player.autoPointLevel * player.autoPointLevel * Math.pow(3, player.metaAutoUpgrade), "scientific") + " Points/sec")
-    update("point", format(player.point, "scientific") + " Point")
+    update("pps", format(player.autoPointLevel * player.autoPointLevel * Math.pow(3, player.metaAutoUpgrade), player.notation) + " Points/sec")
+    update("point", format(player.point, player.notation) + " Point")
     if (player.point != 1)
     {
         update("point", document.getElementById("point").innerHTML + "s")
@@ -134,12 +149,12 @@ function upgradeAutoPoint() {
         player.point -= player.autoPointCost
         player.autoPointLevel += 1
         player.autoPointCost = player.autoPointLevel * player.autoPointLevel * player.autoPointLevel * 100
-        update("point", format(player.point, "scientific") + " Point")
+        update("point", format(player.point, player.notation) + " Point")
         if (player.point != 1)
         {
             update("point", document.getElementById("point").innerHTML + "s")
         }
-        update("b02", "Upgrade Auto: Level " + format(player.autoPointLevel, "scientific") + " (Costs " + format(player.autoPointCost, "scientific") + " Points)")
+        update("b02", "Upgrade Auto: Level " + player.autoPointLevel + " (Costs " + format(player.autoPointCost, player.notation) + " Points)")
     }
 }
 
@@ -149,13 +164,13 @@ function upgradeMetaClick() {
         player.metaPoint -= player.metaClickCost
         player.metaClickUpgrade += 1
         player.metaClickCost = player.metaClickCost * 3
-        update("mp", format(player.metaPoint, "scientific") + " Meta-Point")
+        update("mp", format(player.metaPoint, player.notation) + " Meta-Point")
         if (player.metaPoint != 1)
         {
             update("mp", document.getElementById("mp").innerHTML + "s")
         }
-        update("a01", "Earn " + format(player.pointPerClick*Math.pow(2, player.metaClickUpgrade), "scientific") + " Point")
-        update("c01", "Upgrade Meta-Click: Level " + player.metaClickUpgrade + " (Costs " + format(player.metaClickCost, "scientific") + " Meta-Points)")
+        update("a01", "Earn " + format(player.pointPerClick*Math.pow(2, player.metaClickUpgrade), player.notation) + " Point")
+        update("c01", "Upgrade Meta-Click: Level " + player.metaClickUpgrade + " (Costs " + format(player.metaClickCost, player.notation) + " Meta-Points)")
     }
 }
 
@@ -165,13 +180,13 @@ function upgradeMetaAuto() {
         player.metaPoint -= player.metaAutoCost
         player.metaAutoUpgrade += 1
         player.metaAutoCost = player.metaAutoCost * 3
-        update("mp", format(player.metaPoint, "scientific") + " Meta-Point")
+        update("mp", format(player.metaPoint, player.notation) + " Meta-Point")
         if (player.metaPoint != 1)
         {
             update("mp", document.getElementById("mp").innerHTML + "s")
         }
-        update("pps", format(player.autoPointLevel * player.autoPointLevel * Math.pow(3, player.metaAutoUpgrade), "scientific") + " Points/sec")
-        update("c03", "Upgrade Meta-Auto: Level " + player.metaAutoUpgrade + " (Costs " + format(player.metaAutoCost, "scientific") + " Meta-Points)")
+        update("pps", format(player.autoPointLevel * player.autoPointLevel * Math.pow(3, player.metaAutoUpgrade), player.notation) + " Points/sec")
+        update("c03", "Upgrade Meta-Auto: Level " + player.metaAutoUpgrade + " (Costs " + format(player.metaAutoCost, player.notation) + " Meta-Points)")
     }
 }
 
@@ -213,20 +228,22 @@ if (savegame !== null) {
     if (typeof savegame.metaClickCost !== "undefined") player.metaClickCost = savegame.metaClickCost
     if (typeof savegame.metaAutoUpgrade !== "undefined") player.metaAutoUpgrade = savegame.metaAutoUpgrade
     if (typeof savegame.metaAutoCost !== "undefined") player.metaAutoCost = savegame.metaAutoCost
+    if (typeof savegame.notation !== "undefined") player.notation = savegame.notation
     if (typeof savegame.lastTick !== "undefined") player.lastTick = savegame.lastTick
 }
 
 var gameLoop = window.setInterval(function() {
     if (isNaN(player.point)) player.point = 0
     diff = Date.now() - player.lastTick
+    update("z01", "Notation: " + notationList[player.notation])
     player.lastTick = Date.now()
-    update("b01", "Upgrade Click: Level " + player.pointPerClick + " (Costs " + format(player.pointPerClickCost, "scientific") + " Points)")
-    update("b02", "Upgrade Auto: Level " + format(player.autoPointLevel, "scientific") + " (Costs " + format(player.autoPointCost, "scientific") + " Points)")
-    update("c01", "Upgrade Meta-Click: Level " + player.metaClickUpgrade + " (Costs " + format(player.metaClickCost, "scientific") + " Meta-Points)")
-    update("c02", "Meta-Click multiplies your Click Value by " + format(Math.pow(2, player.metaClickUpgrade), "scientific") + "x.")
-    update("c03", "Upgrade Meta-Auto: Level " + player.metaAutoUpgrade + " (Costs " + format(player.metaAutoCost, "scientific") + " Meta-Points)")
-    update("c04", "Meta-Auto multiplies your Auto Value by " + format(Math.pow(3, player.metaAutoUpgrade), "scientific") + "x.")
-    update("a01", "Earn " + format(player.pointPerClick*Math.pow(2, player.metaClickUpgrade), "scientific") + " Point")
+    update("b01", "Upgrade Click: Level " + player.pointPerClick + " (Costs " + format(player.pointPerClickCost, player.notation) + " Points)")
+    update("b02", "Upgrade Auto: Level " + player.autoPointLevel + " (Costs " + format(player.autoPointCost, player.notation) + " Points)")
+    update("c01", "Upgrade Meta-Click: Level " + player.metaClickUpgrade + " (Costs " + format(player.metaClickCost, player.notation) + " Meta-Points)")
+    update("c02", "Meta-Click multiplies your Click Value by " + format(Math.pow(2, player.metaClickUpgrade), player.notation) + "x.")
+    update("c03", "Upgrade Meta-Auto: Level " + player.metaAutoUpgrade + " (Costs " + format(player.metaAutoCost, player.notation) + " Meta-Points)")
+    update("c04", "Meta-Auto multiplies your Auto Value by " + format(Math.pow(3, player.metaAutoUpgrade), player.notation) + "x.")
+    update("a01", "Earn " + format(player.pointPerClick*Math.pow(2, player.metaClickUpgrade), player.notation) + " Point")
     if (player.pointPerClick*Math.pow(2, player.metaClickUpgrade) != 1)
     {
         update("a01", document.getElementById("a01").innerHTML + "s")
