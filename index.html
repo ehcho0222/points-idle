@@ -11,9 +11,10 @@
     <p id="mp" class="large" style="display:none">0 Meta-Points</p>
     <button id="prestige1" class="genericB" style="display:none" disabled=true onclick="prestige()">Prestige for 0 Meta-Points</button>
     <div id="nav">
-        <button onclick="tab('produceMenu')" class="nav">Main</button>
-        <button onclick="tab('shopMenu')" class="nav">Shop</button>
-        <button onclick="tab('settingMenu')" class="nav">Settings</button>
+        <button onclick="tab('produceMenu')" class="genericB">Main</button>
+        <button onclick="tab('shopMenu')" class="genericB">Shop</button>
+        <button onclick="tab('metaPointMenu')" class="prestigeB" style="display:none" id="mpnav">Meta-Points</button>
+        <button onclick="tab('settingMenu')" class="genericB">Settings</button>
     </div>
     <div id="produceMenu" style="display:inline-block">
         <button id="a01" onclick="clickPoint()" class="genericB">Earn 1 Point</button>
@@ -23,11 +24,17 @@
         <br>
         <button id="b02" onclick="upgradeAutoPoint()" class="genericB">Upgrade Auto: Level 0 (Costs 100 Points)</button>
     </div>
+    <div id="metaPointMenu" style="display:none">
+        <p id="c02">Meta-Click multiplies your Click Value by 1x.</p>
+        <button id="c01" onclick="upgradeMetaClick()" class="prestigeB">Upgrade Meta-Click: Level 0 (Costs 1 Meta-Point)</button>
+        <br>
+        <p id="c04">Meta-Auto multiplies your Auto Points by 1x.</p>
+        <button id="c03" onclick="upgradeMetaAuto()" class="prestigeB">Upgrade Meta-Auto: Level 0 (Costs 1 Meta-Point)</button>
+    </div>
     <div id="settingMenu" style="display:none">
         <button id="z01" onclick="hardReset()" class="danger">HARD RESET</button>
-    </div>
-    <footer>
+        <br>
         <a href="changelog.html" target="_blank" rel="noopener noreferrer">Changelog</a>
-    </footer>
+    </div>
     <script type="text/javascript" src="src/main.js"></script>
 </body>
