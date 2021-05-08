@@ -3,11 +3,11 @@
     <meta charset="utf-8">
     <title>Points Idle</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style/styles.css" />
+    <link rel="stylesheet" type="text/css" href="style/styles.css">
 </head>
 <body>
-    <p id="point" class="xlarge">0 Points</p>
-    <p id="pps" class="large">0 Points/sec</p>
+    <p id="point" class="xlarge">You have 0 Points.</p>
+    <p id="pps" class="large">You are getting 0 Points per second.</p>
     <p id="mp" class="large" style="display:none">0 Meta-Points</p>
     <button id="prestige1" class="genericB" style="display:none" disabled=true onclick="prestige()">Prestige for 0 Meta-Points</button>
     <div id="nav">
@@ -20,19 +20,36 @@
         <button id="a01" onclick="clickPoint()" class="genericB">Earn 1 Point</button>
     </div>
     <div id="shopMenu" style="display:none">
+        <button id="b05" onclick="Layer1MaxAll()" class="genericB">Max All</button>
+        <br>
         <button id="b01" onclick="upgradeClick()" class="genericB">Upgrade Click: Level 1 (Costs 10 Points)</button>
+        <button id="b03" onclick="upgradeMaxClick()" class="genericB">Max</button>
         <br>
         <button id="b02" onclick="upgradeAutoPoint()" class="genericB">Upgrade Auto: Level 0 (Costs 100 Points)</button>
+        <button id="b04" onclick="upgradeMaxAuto()" class="genericB">Max</button>
     </div>
     <div id="metaPointMenu" style="display:none">
         <p id="c02" class="ex">Meta-Click multiplies your Click Value by 1x.</p>
         <button id="c01" onclick="upgradeMetaClick()" class="prestigeB">Upgrade Meta-Click: Level 0 (Costs 1 Meta-Point)</button>
+        <button id="c05" onclick="upgradeMaxMetaClick()" class="genericB">Max</button>
         <br>
         <p id="c04" class="ex">Meta-Auto multiplies your Auto Points by 1x.</p>
         <button id="c03" onclick="upgradeMetaAuto()" class="prestigeB">Upgrade Meta-Auto: Level 0 (Costs 1 Meta-Point)</button>
+        <button id="c07" onclick="upgradeMaxMetaAuto()" class="genericB">Max</button>
     </div>
     <div id="settingMenu" style="display:none">
-        <button id="z01" onclick="changeNotation()" class="genericB">Notation: Scientific</button>
+        <span id="z01">Notation: </span>
+        <button id="z02" onclick="changeNotation(0)" class="genericB">Scientific</button>
+        <button id="z03" onclick="changeNotation(1)" class="genericB">Engineering</button>
+        <button id="z04" onclick="changeNotation(2)" class="genericB">Standard</button>
+        <button id="z05" onclick="changeNotation(3)" class="genericB">Alphabet</button>
+        <button id="z06" onclick="changeNotation(4)" class="genericB">Cancer</button>
+        <button id="z07" onclick="changeNotation(5)" class="genericB">Logarithm</button>
+        <br>
+        <span id="z08">Theme: </span>
+        <button id="z09" onclick="changeTheme(0)" class="genericB">Light</button>
+        <button id="z10" onclick="changeTheme(1)" class="genericB">Dark</button>
+        <br>
         <button id="z99" onclick="hardReset()" class="danger">HARD RESET</button>
         <br>
         <a href="changelog.html" target="_blank" rel="noopener noreferrer">Changelog</a>
