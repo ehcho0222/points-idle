@@ -13,6 +13,7 @@ var player = {
     metaAutoUpgrade: 0,
     metaAutoCost: 1,
     notation: 0,
+    confirmation1: true,
     lastTick: Date.now
 }
 
@@ -32,9 +33,11 @@ function tab(tab) {
 }
 
 function unlock() {
-    if (player.point >= 5000)
+    if (player.point >= 2500)
     {
         document.getElementById("prestige1").style.display = "inline-block"
+        document.getElementById("z08").style.display = "inline-block"
+        document.getElementById("z09").style.display = "inline-block"
         player.prestigeUnlock = true
     }
     if (player.metaPoint >= 1)
@@ -51,6 +54,12 @@ function update(id, content) {
 
 function changeNotation(type) {
     player.notation = type
+}
+
+function prestigeConfirmation() {
+    player.confirmation1 = !(player.confirmation1)
+    if (player.confirmation1 === true) update("z09", "Prestige: ON")
+    else update("z09", "Prestige: OFF")
 }
 
 function format(number, type) {
@@ -109,26 +118,35 @@ function format(number, type) {
 }
 
 function prestigeUpdate() {
-    if (player.point >= Math.pow(2, 2.5) * 5000)
+    if (player.point >= Math.pow(100, 2.5) * 5000)
     {
         document.getElementById("prestige1").disabled = false;
         update("prestige1", "Prestige for " + format(Math.floor(Math.pow(player.point / 5000, 0.4)), player.notation) + " Meta-Points")
     }
+    else if (player.point >= Math.pow(2, 2.5) * 5000)
+    {
+        document.getElementById("prestige1").disabled = false;
+        update("prestige1", "Prestige for " + format(Math.floor(Math.pow(player.point / 5000, 0.4)), player.notation) + " Meta-Points" + "<br/>" + "Next at " + format(Math.pow(Math.floor(Math.pow(player.point / 5000, 0.4)) + 1, 2.5) * 5000, player.notation) + " Points")
+    }
     else if (player.point >= 5000)
     {
         document.getElementById("prestige1").disabled = false;
-        update("prestige1", "Prestige for 1 Meta-Point")
+        update("prestige1", "Prestige for 1 Meta-Point" + "<br/>" + "Next at " + format(28285, player.notation) + " Points")
     }
     else
     {
         document.getElementById("prestige1").disabled = true;
-        update("prestige1", "Prestige for 0 Meta-Points")
+        update("prestige1", "Prestige for 0 Meta-Points" + "<br/>" + "Next at " + format(5000, player.notation) + " Points")
     }
 }
 
 function prestige() {
-    var prestigeCon = confirm("Are you sure you want to prestige? You will get " + format(Math.floor(Math.pow(player.point/5000, 0.4)), player.notation) + " Meta-Points.")
-    if (prestigeCon === true)
+    var prestigeCon
+    if (player.confirmation1 === true)
+    {
+        prestigeCon = confirm("Are you sure you want to prestige? You will get " + format(Math.floor(Math.pow(player.point/5000, 0.4)), player.notation) + " Meta-Points.")
+    }
+    if (prestigeCon === true || player.confirmation1 === false)
     {
         player.metaPoint += Math.floor(Math.pow(player.point/5000, 0.4))
         player.point = 0
@@ -136,11 +154,12 @@ function prestige() {
         player.pointPerClickCost = 10
         player.autoPointLevel = 0
         player.autoPointCost = 100
-        update("mp", format(player.metaPoint, player.notation) + " Meta-Point")
+        update("mp", "You have " + format(player.metaPoint, player.notation) + " Meta-Point")
         if (player.metaPoint != 1)
         {
             update("mp", document.getElementById("mp").innerHTML + "s")
         }
+        update("mp", document.getElementById("mp").innerHTML + ".")
         unlock()
     }
 }
@@ -229,11 +248,12 @@ function upgradeMetaClick() {
         player.metaPoint -= player.metaClickCost
         player.metaClickUpgrade += 1
         player.metaClickCost = player.metaClickCost * 3
-        update("mp", format(player.metaPoint, player.notation) + " Meta-Point")
+        update("mp", "You have " + format(player.metaPoint, player.notation) + " Meta-Point")
         if (player.metaPoint != 1)
         {
             update("mp", document.getElementById("mp").innerHTML + "s")
         }
+        update("mp", document.getElementById("mp").innerHTML + ".")
         update("a01", "Earn " + format(player.pointPerClick*Math.pow(3, player.metaClickUpgrade), player.notation) + " Point")
         update("c01", "Upgrade Meta-Click: Level " + player.metaClickUpgrade + " (Costs " + format(player.metaClickCost, player.notation) + " Meta-Points)")
         return true
@@ -251,11 +271,12 @@ function upgradeMetaAuto() {
         player.metaPoint -= player.metaAutoCost
         player.metaAutoUpgrade += 1
         player.metaAutoCost = player.metaAutoCost * 3
-        update("mp", format(player.metaPoint, player.notation) + " Meta-Point")
+        update("mp", "You have " + format(player.metaPoint, player.notation) + " Meta-Point")
         if (player.metaPoint != 1)
         {
             update("mp", document.getElementById("mp").innerHTML + "s")
         }
+        update("mp", document.getElementById("mp").innerHTML + ".")
         update("pps", "You are getting " + format(player.autoPointLevel * player.autoPointLevel * Math.pow(4, player.metaAutoUpgrade), player.notation) + " Points per second.")
         update("c03", "Upgrade Meta-Auto: Level " + player.metaAutoUpgrade + " (Costs " + format(player.metaAutoCost, player.notation) + " Meta-Points)")
         return true
@@ -280,6 +301,7 @@ function hardReset() {
     player.metaClickCost = 1
     player.metaAutoUpgrade = 0
     player.metaAutoCost = 1
+    player.confirmation1 = true
     player.lastTick = Date.now()
     document.getElementById("mpnav").style.display = "none"
     tab(produceMenu)
@@ -293,7 +315,12 @@ if (savegame !== null) {
     if (typeof savegame.autoPointLevel !== "undefined") player.autoPointLevel = savegame.autoPointLevel
     if (typeof savegame.autoPointCost !== "undefined") player.autoPointCost = savegame.autoPointCost
     if (typeof savegame.prestigeUnlock !== "undefined") player.prestigeUnlock = savegame.prestigeUnlock
-    if (player.prestigeUnlock === true) document.getElementById("prestige1").style.display = "inline-block"
+    if (player.prestigeUnlock === true)
+    {
+        document.getElementById("prestige1").style.display = "inline-block"
+        document.getElementById("z08").style.display = "inline-block"
+        document.getElementById("z09").style.display = "inline-block"
+    }
     if (typeof savegame.metaPoint !== "undefined") player.metaPoint = savegame.metaPoint
     if (typeof savegame.prestigeMenuUnlock !== "undefined") player.prestigeMenuUnlock = savegame.prestigeMenuUnlock
     if (player.prestigeMenuUnlock === true)
@@ -306,6 +333,7 @@ if (savegame !== null) {
     if (typeof savegame.metaAutoUpgrade !== "undefined") player.metaAutoUpgrade = savegame.metaAutoUpgrade
     if (typeof savegame.metaAutoCost !== "undefined") player.metaAutoCost = savegame.metaAutoCost
     if (typeof savegame.notation !== "undefined") player.notation = savegame.notation
+    if (typeof savegame.confirmation1 !== "undefined") player.confirmation1 = savegame.confirmation1
     if (typeof savegame.lastTick !== "undefined") player.lastTick = savegame.lastTick
 }
 
@@ -327,11 +355,12 @@ var gameLoop = window.setInterval(function() {
     autoPoint(diff)
     unlock()
     prestigeUpdate()
-    update("mp", format(player.metaPoint, player.notation) + " Meta-Point")
+    update("mp", "You have " + format(player.metaPoint, player.notation) + " Meta-Point")
     if (player.metaPoint != 1)
     {
         update("mp", document.getElementById("mp").innerHTML + "s")
     }
+    update("mp", document.getElementById("mp").innerHTML + ".")
 }, 100)
 
 var saveLoop = window.setInterval(function() {

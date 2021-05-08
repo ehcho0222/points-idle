@@ -8,8 +8,9 @@
 <body>
     <p id="point" class="xlarge">You have 0 Points.</p>
     <p id="pps" class="large">You are getting 0 Points per second.</p>
-    <p id="mp" class="large" style="display:none">0 Meta-Points</p>
-    <button id="prestige1" class="genericB" style="display:none" disabled=true onclick="prestige()">Prestige for 0 Meta-Points</button>
+    <p id="mp" class="large" style="display:none">You have 0 Meta-Points.</p>
+    <br>
+    <button id="prestige1" class="prestigeB" style="display:none" disabled=true onclick="prestige()">Prestige for 0 Meta-Points<br>Next at 5000 Points</button>
     <div id="nav">
         <button onclick="tab('produceMenu')" class="genericB">Main</button>
         <button onclick="tab('shopMenu')" class="genericB">Shop</button>
@@ -31,11 +32,11 @@
     <div id="metaPointMenu" style="display:none">
         <p id="c02" class="ex">Meta-Click multiplies your Click Value by 1x.</p>
         <button id="c01" onclick="upgradeMetaClick()" class="prestigeB">Upgrade Meta-Click: Level 0 (Costs 1 Meta-Point)</button>
-        <button id="c05" onclick="upgradeMaxMetaClick()" class="genericB">Max</button>
+        <button id="c05" onclick="upgradeMaxMetaClick()" class="prestigeB">Max</button>
         <br>
         <p id="c04" class="ex">Meta-Auto multiplies your Auto Points by 1x.</p>
         <button id="c03" onclick="upgradeMetaAuto()" class="prestigeB">Upgrade Meta-Auto: Level 0 (Costs 1 Meta-Point)</button>
-        <button id="c07" onclick="upgradeMaxMetaAuto()" class="genericB">Max</button>
+        <button id="c06" onclick="upgradeMaxMetaAuto()" class="prestigeB">Max</button>
     </div>
     <div id="settingMenu" style="display:none">
         <span id="z01">Notation: </span>
@@ -46,9 +47,12 @@
         <button id="z06" onclick="changeNotation(4)" class="genericB">Cancer</button>
         <button id="z07" onclick="changeNotation(5)" class="genericB">Logarithm</button>
         <br>
-        <span id="z08">Theme: </span>
-        <button id="z09" onclick="changeTheme(0)" class="genericB">Light</button>
-        <button id="z10" onclick="changeTheme(1)" class="genericB">Dark</button>
+        <span id="z08" style="display:none">Confirmations: </span>
+        <button id="z09" onclick="prestigeConfirmation()" class="genericB" style="display:none">Prestige: ON</button>
+        <br>
+        <span id="z10" style="display:none">Theme: </span>
+        <button id="z11" onclick="changeTheme(0)" class="genericB" style="display:none">Light</button>
+        <button id="z12" onclick="changeTheme(1)" class="genericB" style="display:none">Dark</button>
         <br>
         <button id="z99" onclick="hardReset()" class="danger">HARD RESET</button>
         <br>
